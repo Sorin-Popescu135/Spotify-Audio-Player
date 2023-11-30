@@ -32,6 +32,11 @@ public class User {
     private final Player player;
     private final SearchBar searchBar;
     private boolean lastSearched;
+    @Getter
+    private Integer userOrartistOrhost; // 0 = user; 1 = artist; 2 = host
+    @Getter
+    private boolean online;
+
 
     public User(String username, int age, String city) {
         this.username = username;
@@ -43,7 +48,13 @@ public class User {
         player = new Player();
         searchBar = new SearchBar(username);
         lastSearched = false;
+        userOrartistOrhost = 0;
+        online = true;
     }
+
+    public void setUserOrartistOrhost(Integer userOrartistOrhost) { this.userOrartistOrhost = userOrartistOrhost; }
+
+    public void setOnline(boolean active) { this.online = active; }
 
     public ArrayList<String> search(Filters filters, String type) {
         searchBar.clearSelection();
@@ -318,6 +329,17 @@ public class User {
     }
 
     public void simulateTime(int time) {
-        player.simulatePlayer(time);
+        if(this.isOnline()){
+            player.simulatePlayer(time);
+        }
+    }
+
+    public String switchConnectionStatus(){
+        if(this.getUserOrartistOrhost() != 0){
+            return this.getUsername() + " is not a normal user.";
+        }
+
+        this.setOnline(!this.isOnline());
+        return this.getUsername() + " has changed status successfully.";
     }
 }

@@ -105,6 +105,9 @@ public final class Main {
                 case "getPreferredGenre" -> outputs.add(CommandRunner.getPreferredGenre(command));
                 case "getTop5Songs" -> outputs.add(CommandRunner.getTop5Songs(command));
                 case "getTop5Playlists" -> outputs.add(CommandRunner.getTop5Playlists(command));
+                case "addUser" -> outputs.add(CommandRunner.addUser(command));  // facuta de mine
+                case "switchConnectionStatus" -> outputs.add(CommandRunner.switchConnectionStatus(command)); // facuta de mine
+                case "getOnlineUsers" -> outputs.add(CommandRunner.getOnlineUsers(command)); // facuta de mine
                 default -> System.out.println("Invalid command " + commandName);
             }
         }
@@ -113,5 +116,9 @@ public final class Main {
         objectWriter.writeValue(new File(filePath2), outputs);
 
         Admin.reset();
+
+
+
+        System.out.println("END OF TEST" + "\n");
     }
 }

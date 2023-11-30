@@ -19,15 +19,26 @@ public class CommandRunner {
         Filters filters = new Filters(commandInput.getFilters());
         String type = commandInput.getType();
 
-        ArrayList<String> results = user.search(filters, type);
-        String message = "Search returned " + results.size() + " results";
-
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("command", commandInput.getCommand());
         objectNode.put("user", commandInput.getUsername());
         objectNode.put("timestamp", commandInput.getTimestamp());
-        objectNode.put("message", message);
-        objectNode.put("results", objectMapper.valueToTree(results));
+
+        String message = null;
+
+        if(!user.isOnline()){
+            message = user.getUsername() + " is offline.";
+            objectNode.put("message", message);
+            ArrayList<String> results = new ArrayList<>();
+            objectNode.put("results", objectMapper.valueToTree(results));
+
+        } else {
+            ArrayList<String> results = user.search(filters, type);
+            message = "Search returned " + results.size() + " results";
+            objectNode.put("message", message);
+            objectNode.put("results", objectMapper.valueToTree(results));
+
+        }
 
         return objectNode;
     }
@@ -289,4 +300,56 @@ public class CommandRunner {
 
         return objectNode;
     }
+
+    public static ObjectNode addUser(CommandInput commandInput){
+
+        String username = commandInput.getUsername();
+        String type = commandInput.getType();
+        String city = commandInput.getCity();
+        Integer age =  commandInput.getAge();
+
+        String message = Admin.addUser(username, city, age, type);
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", username);
+        objectNode.put("timestamp", commandInput.getTimestamp());
+        objectNode.put("message", objectMapper.valueToTree(message));
+
+        return  objectNode;
+    }
+
+    public static ObjectNode switchConnectionStatus(CommandInput commandInput) {
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        String message = null;
+
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+        objectNode.put("user", commandInput.getUsername());
+
+        User user = Admin.getUser(commandInput.getUsername());
+        if(user == null){
+            message = "The username " + commandInput.getUsername() +  " doesn't exist.";
+            objectNode.put("message", message);
+            return  objectNode;
+        }
+
+        message = user.switchConnectionStatus();
+        objectNode.put("message", objectMapper.valueToTree(message));
+
+        return  objectNode;
+    }
+
+    public static ObjectNode getOnlineUsers(CommandInput commandInput) {
+        ObjectNode objectNode = objectMapper.createObjectNode();
+
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+
+        ArrayList<String> result = Admin.getOnlineUsers();
+        objectNode.put("result", objectMapper.valueToTree(result));
+
+        return objectNode;
+    }
+
 }

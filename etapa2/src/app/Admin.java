@@ -107,6 +107,37 @@ public class Admin {
         return topPlaylists;
     }
 
+    public static String addUser(String username, String city, Integer age, String type){
+        User newuser = new User(username, age, city);
+        switch (type){
+            case "artist" -> newuser.setUserOrartistOrhost(1);
+            case "host" -> newuser.setUserOrartistOrhost(2);
+            default -> {
+                break;
+            }
+        }
+
+        for(User i : users){
+            if(i.getUsername().equalsIgnoreCase(newuser.getUsername())){
+                return "The username " + newuser.getUsername() + " has been added successfully";
+            }
+        }
+
+        users.add(newuser);
+        return "The username " + newuser.getUsername() + " has been added successfully";
+
+    }
+
+    public static ArrayList<String> getOnlineUsers() {
+        ArrayList<String> onlineusers = new ArrayList<>();
+        for(User i : users){
+            if(i.isOnline()){
+                onlineusers.add(i.getUsername());
+            }
+        }
+        return onlineusers;
+    }
+
     public static void reset() {
         users = new ArrayList<>();
         songs = new ArrayList<>();
