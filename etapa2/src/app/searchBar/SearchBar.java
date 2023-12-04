@@ -26,6 +26,10 @@ public class SearchBar {
         this.user = user;
     }
 
+    public SearchBar() {
+        this.user = null;
+    }
+
     public void clearSelection() {
         lastSelected = null;
         lastSearchType = null;

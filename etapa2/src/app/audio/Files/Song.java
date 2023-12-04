@@ -1,5 +1,6 @@
 package app.audio.Files;
 
+import fileio.input.SongInput;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -24,6 +25,17 @@ public final class Song extends AudioFile {
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.artist = artist;
+        this.likes = 0;
+    }
+
+    public Song(SongInput song){
+        super(song.getName(), song.getDuration());
+        this.album = song.getAlbum();
+        this.tags = song.getTags();
+        this.lyrics = song.getLyrics();
+        this.genre = song.getGenre();
+        this.releaseYear = song.getReleaseYear();
+        this.artist = song.getArtist();
         this.likes = 0;
     }
 

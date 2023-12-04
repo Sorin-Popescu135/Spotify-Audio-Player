@@ -2,6 +2,10 @@ package main;
 
 import app.Admin;
 import app.CommandRunner;
+import app.audio.Collections.Album;
+import app.audio.Files.Song;
+import app.user.Artist;
+import app.user.User;
 import checker.Checker;
 import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -108,6 +112,7 @@ public final class Main {
                 case "addUser" -> outputs.add(CommandRunner.addUser(command));  // facuta de mine
                 case "switchConnectionStatus" -> outputs.add(CommandRunner.switchConnectionStatus(command)); // facuta de mine
                 case "getOnlineUsers" -> outputs.add(CommandRunner.getOnlineUsers(command)); // facuta de mine
+                case "addAlbum" -> outputs.add(CommandRunner.addAlbum(command)); // facuta de mine
                 default -> System.out.println("Invalid command " + commandName);
             }
         }
@@ -116,8 +121,6 @@ public final class Main {
         objectWriter.writeValue(new File(filePath2), outputs);
 
         Admin.reset();
-
-
 
         System.out.println("END OF TEST" + "\n");
     }

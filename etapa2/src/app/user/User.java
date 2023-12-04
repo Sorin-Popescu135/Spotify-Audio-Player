@@ -3,6 +3,7 @@ package app.user;
 import app.audio.Collections.AudioCollection;
 import app.audio.Collections.Playlist;
 import app.audio.Collections.PlaylistOutput;
+import app.audio.Collections.Album;
 import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
@@ -10,7 +11,9 @@ import app.player.Player;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
 import app.searchBar.SearchBar;
+import app.utils.BooleanWrapper;
 import app.utils.Enums;
+import app.utils.StringWrapper;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -36,6 +39,8 @@ public class User {
     private Integer userOrartistOrhost; // 0 = user; 1 = artist; 2 = host
     @Getter
     private boolean online;
+    @Getter
+    private ArrayList<Album> albums;
 
 
     public User(String username, int age, String city) {
@@ -50,11 +55,46 @@ public class User {
         lastSearched = false;
         userOrartistOrhost = 0;
         online = true;
+        albums = new ArrayList<>();
     }
+
+    public User(String username, int age, String city, ArrayList<Album> thealbums) {
+        this.username = username;
+        this.age = age;
+        this.city = city;
+        playlists = new ArrayList<>();
+        likedSongs = new ArrayList<>();
+        followedPlaylists = new ArrayList<>();
+        player = new Player();
+        searchBar = new SearchBar(username);
+        lastSearched = false;
+        userOrartistOrhost = 0;
+        online = true;
+        albums = thealbums;
+    }
+
+    public User() {
+        player = new Player();
+        searchBar = new SearchBar();
+    }
+
+    public void setAlbums(ArrayList<Album> albums) { this.albums = albums; }
 
     public void setUserOrartistOrhost(Integer userOrartistOrhost) { this.userOrartistOrhost = userOrartistOrhost; }
 
     public void setOnline(boolean active) { this.online = active; }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public ArrayList<String> search(Filters filters, String type) {
         searchBar.clearSelection();
@@ -341,5 +381,13 @@ public class User {
 
         this.setOnline(!this.isOnline());
         return this.getUsername() + " has changed status successfully.";
+    }
+
+    public void addAlbum(Album album, StringWrapper message){}
+
+    public void hasAlbumWithSameName(Album album, BooleanWrapper bool) {}
+
+    public ArrayList<Album> getUserAlbums(){
+        return null;
     }
 }

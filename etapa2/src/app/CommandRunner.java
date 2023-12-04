@@ -1,12 +1,18 @@
 package app;
 
 import app.audio.Collections.PlaylistOutput;
+import app.audio.Collections.Album;
+import app.audio.Files.Song;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
+import app.user.Artist;
 import app.user.User;
+import app.utils.BooleanWrapper;
+import app.utils.StringWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.CommandInput;
+import fileio.input.SongInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -348,6 +354,63 @@ public class CommandRunner {
 
         ArrayList<String> result = Admin.getOnlineUsers();
         objectNode.put("result", objectMapper.valueToTree(result));
+
+        return objectNode;
+    }
+
+    public static ObjectNode addAlbum(CommandInput commandInput) {
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        User user = Admin.getUser(commandInput.getUsername());
+        String message = null;
+
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+
+
+        ArrayList<Song> songs = new ArrayList<>();
+        for(SongInput i : commandInput.getSongs()){
+            Song newformat = new Song(i);
+            songs.add(newformat);
+        }
+
+        Album album = new Album(commandInput.getReleaseYear(), commandInput.getName(), songs, commandInput.getDescription(), commandInput.getUsername());
+
+        if (user == null) {
+            message = "The username " + commandInput.getUsername() + " doesn't exist.";
+            objectNode.put("message", objectMapper.valueToTree(message));
+            return objectNode;
+        }
+
+        if (user.getUserOrartistOrhost() != 1) {
+            message = user.getUsername() + " is not an artist.";
+            objectNode.put("message", objectMapper.valueToTree(message));
+            return objectNode;
+        }
+
+        if (album.hasDuplicateSongs()) {
+
+            message = user.getUsername() + " has the same song at least twice in this album.";
+            objectNode.put("message", objectMapper.valueToTree(message));
+            return objectNode;
+        }
+
+        user = new Artist(user);
+
+        BooleanWrapper bool = new BooleanWrapper(false);
+        user.hasAlbumWithSameName(album, bool);
+
+        if (bool.getBool()) {
+            message = user.getUsername() + " has another album with the same name.";
+            objectNode.put("message", objectMapper.valueToTree(message));
+            return objectNode;
+        }
+
+        StringWrapper messageWrapper = new StringWrapper("");
+
+        user.addAlbum(album, messageWrapper);
+
+        objectNode.put("message", objectMapper.valueToTree(messageWrapper.getValue()));
 
         return objectNode;
     }

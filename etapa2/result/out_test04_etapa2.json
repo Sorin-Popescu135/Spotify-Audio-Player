@@ -39,6 +39,16 @@
   "timestamp" : 40,
   "message" : "The username irene33 has been added successfully"
 }, {
+  "command" : "addAlbum",
+  "user" : "rhythmrider",
+  "timestamp" : 50,
+  "message" : "rhythmrider has added new album successfully."
+}, {
+  "command" : "addAlbum",
+  "user" : "beatblazer",
+  "timestamp" : 55,
+  "message" : "beatblazer has added new album successfully."
+}, {
   "command" : "search",
   "user" : "melodicmind42",
   "timestamp" : 60,
