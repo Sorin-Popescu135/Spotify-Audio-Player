@@ -13,34 +13,62 @@ public final class Playlist extends AudioCollection {
     private Enums.Visibility visibility;
     private Integer followers;
     private int timestamp;
+    private int totallikes;
 
-    public Playlist(String name, String owner) {
+    public Playlist(final String name, final String owner) {
         this(name, owner, 0);
     }
 
-    public Playlist(String name, String owner, int timestamp) {
+    public Playlist(final String name, final String owner, final int timestamp) {
         super(name, owner);
         this.songs = new ArrayList<>();
         this.visibility = Enums.Visibility.PUBLIC;
         this.followers = 0;
         this.timestamp = timestamp;
+        this.totallikes = 0;
     }
 
-    public boolean containsSong(Song song) {
+    /**
+     * Checks if a song is present in the playlist.
+     *
+     * @param song The song to be checked. It should not be null.
+     * @return true if the song is present in the playlist, false otherwise.
+     */
+    public boolean containsSong(final Song song) {
         return songs.contains(song);
     }
 
-    public void addSong(Song song) {
+    /**
+     * Adds a new song to the playlist.
+     *
+     * @param song The song to be added. It should not be null.
+     */
+    public void addSong(final Song song) {
         songs.add(song);
     }
 
-    public void removeSong(Song song) {
+    /**
+     * Removes a song from the playlist.
+     *
+     * @param song The song to be removed. It should not be null.
+     */
+    public void removeSong(final Song song) {
         songs.remove(song);
     }
-    public void removeSong(int index) {
+
+    /**
+     * Removes a song from the playlist by its index.
+     *
+     * @param index The index of the song to be removed.
+     */
+    public void removeSong(final int index) {
         songs.remove(index);
     }
 
+    /**
+     * Switches the visibility of the playlist.
+     * If the visibility is currently PUBLIC, it will be changed to PRIVATE, and vice versa.
+     */
     public void switchVisibility() {
         if (visibility == Enums.Visibility.PUBLIC) {
             visibility = Enums.Visibility.PRIVATE;
@@ -49,10 +77,16 @@ public final class Playlist extends AudioCollection {
         }
     }
 
+    /**
+     * Increases the number of followers of the playlist by one.
+     */
     public void increaseFollowers() {
         followers++;
     }
 
+    /**
+     * Decreases the number of followers of the playlist by one.
+     */
     public void decreaseFollowers() {
         followers--;
     }
@@ -63,22 +97,23 @@ public final class Playlist extends AudioCollection {
     }
 
     @Override
-    public AudioFile getTrackByIndex(int index) {
+    public AudioFile getTrackByIndex(final int index) {
         return songs.get(index);
     }
 
     @Override
-    public boolean isVisibleToUser(String user) {
-        return this.getVisibility() == Enums.Visibility.PUBLIC ||
-                (this.getVisibility() == Enums.Visibility.PRIVATE && this.getOwner().equals(user));
+    public boolean isVisibleToUser(final String user) {
+        return this.getVisibility() == Enums.Visibility.PUBLIC
+                || (this.getVisibility() == Enums.Visibility.PRIVATE
+                && this.getOwner().equals(user));
     }
 
     @Override
-    public boolean matchesFollowers(String followers) {
-        return filterByFollowersCount(this.getFollowers(), followers);
+    public boolean matchesFollowers(final String thefollowers) {
+        return filterByFollowersCount(this.getFollowers(), thefollowers);
     }
 
-    private static boolean filterByFollowersCount(int count, String query) {
+    private static boolean filterByFollowersCount(final int count, final String query) {
         if (query.startsWith("<")) {
             return count < Integer.parseInt(query.substring(1));
         } else if (query.startsWith(">")) {
@@ -88,13 +123,13 @@ public final class Playlist extends AudioCollection {
         }
     }
 
-    public Integer getTotalLikes(){
-        Integer totallikes = 0;
-
-        for(Song song : this.songs) {
-            totallikes += song.getLikes();
+    /**
+     * Calculates the total number of likes for all songs in the playlist.
+     */
+    public void getTotalSongsLikes() {
+        for (Song song : this.songs) {
+            this.totallikes += song.getLikes();
         }
 
-        return totallikes;
     }
 }

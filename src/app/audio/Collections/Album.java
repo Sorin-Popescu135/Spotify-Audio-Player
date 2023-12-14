@@ -2,6 +2,8 @@ package app.audio.Collections;
 
 import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
+import app.utils.visitor.Visitable;
+import app.utils.visitor.Visitor;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -10,36 +12,42 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-public class Album extends AudioCollection {
-    List<Song> songs;
+public final class Album extends AudioCollection implements Visitable {
+    private List<Song> songs;
     private String description;
     private Integer releaseYear;
 
-    public Album(){
+    public Album() {
         super("", "");
         this.songs = new ArrayList<>();
     }
 
-    public Album(Integer releaseYear, String name, List<Song> songs, String description, String owner) {
+    public Album(final Integer releaseYear, final String name, final List<Song> songs,
+                 final String description, final String owner) {
         super(name, owner);
         this.releaseYear = releaseYear;
         this.songs = songs;
         this.description = description;
     }
 
-    public void setSongs( List<Song> songs) {
+    public void setSongs(final List<Song> songs) {
         this.songs = songs;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
-    public void setReleaseYear(Integer releaseYear) {
+    public void setReleaseYear(final Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
 
-    public void addSong(Song song){
+    /**
+     * Adds a new song to the list of songs in the album.
+     *
+     * @param song The song to be added. It should not be null.
+     */
+    public void addSong(final Song song) {
         this.songs.add(song);
     }
 
@@ -49,10 +57,15 @@ public class Album extends AudioCollection {
     }
 
     @Override
-    public AudioFile getTrackByIndex(int index) {
+    public AudioFile getTrackByIndex(final int index) {
         return songs.get(index);
     }
 
+    /**
+     * Checks if the album contains duplicate songs.
+     *
+     * @return true if there are duplicate songs in the album, false otherwise.
+     */
     public boolean hasDuplicateSongs() {
         Set<String> seenSongNames = new HashSet<>();
         for (Song song : songs) {
@@ -62,5 +75,23 @@ public class Album extends AudioCollection {
             seenSongNames.add(song.getName());
         }
         return false;
+    }
+
+    /**
+     * Calculates the total number of likes for all songs in the album.
+     *
+     * @return The total number of likes for all songs in the album.
+     */
+    public Integer getTotalLikes() {
+        int totalLikes = 0;
+        for (Song song : songs) {
+            totalLikes += song.getLikes();
+        }
+        return totalLikes;
+    }
+
+    @Override
+    public boolean accept(final Visitor visitor) {
+        return visitor.visit(this);
     }
 }

@@ -39,7 +39,7 @@
   "command" : "addUser",
   "user" : "melodymaster",
   "timestamp" : 295,
-  "message" : "The username melodymaster has been added successfully"
+  "message" : "The username melodymaster has been added successfully."
 }, {
   "command" : "addAlbum",
   "user" : "melodymaster",
@@ -57,7 +57,7 @@
   "command" : "addUser",
   "user" : "alice22",
   "timestamp" : 380,
-  "message" : "The username alice22 has been added successfully"
+  "message" : "The username alice22 is already taken."
 }, {
   "command" : "switchConnectionStatus",
   "timestamp" : 390,
@@ -98,7 +98,8 @@
 }, {
   "user" : "alice22",
   "command" : "printCurrentPage",
-  "timestamp" : 480
+  "timestamp" : 480,
+  "message" : "Liked songs:\n\t[Melodic Mirage]\n\nFollowed playlists:\n\t[]"
 }, {
   "command" : "addAlbum",
   "user" : "melodymaster",
