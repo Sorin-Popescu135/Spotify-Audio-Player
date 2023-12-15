@@ -662,14 +662,16 @@ public class User extends LibraryEntry implements Visitable {
     }
 
     /**
-     * Sorts user's playlists in descending order based on the number of likes from all songs.
+     * Sorts a list of playlists in descending order based on the number of likes.
+     *
+     * @param theplaylists the list of playlist to be sorted
      */
-    public final void sortPlaylistsByLikes() {
-        for (Playlist playlist : followedPlaylists) {
+    public final void sortPlaylistsByLikes(final ArrayList<Playlist> theplaylists) {
+        for (Playlist playlist : theplaylists) {
             playlist.getTotalSongsLikes();
         }
 
-        followedPlaylists.sort(Comparator.comparingInt(Playlist::getTotallikes).reversed());
+        theplaylists.sort(Comparator.comparingInt(Playlist::getTotallikes).reversed());
     }
 
     /**
@@ -685,7 +687,7 @@ public class User extends LibraryEntry implements Visitable {
         ArrayList<Playlist> sortedplaylists = new ArrayList<>(followedPlaylists);
 
         this.sortSongsByLikes(sortedsongs);
-        this.sortPlaylistsByLikes();
+        this.sortPlaylistsByLikes(sortedplaylists);
 
         int count = 0;
         Iterator<Song> songsiterator = sortedsongs.iterator();

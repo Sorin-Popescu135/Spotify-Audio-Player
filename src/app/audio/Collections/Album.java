@@ -64,7 +64,7 @@ public final class Album extends AudioCollection implements Visitable {
     /**
      * Checks if the album contains duplicate songs.
      *
-     * @return true if there are duplicate songs in the album, false otherwise.
+     * @return true if there are duplicate songs on the album, false otherwise.
      */
     public boolean hasDuplicateSongs() {
         Set<String> seenSongNames = new HashSet<>();
@@ -78,9 +78,9 @@ public final class Album extends AudioCollection implements Visitable {
     }
 
     /**
-     * Calculates the total number of likes for all songs in the album.
+     * Calculates the total number of likes for all songs on the album.
      *
-     * @return The total number of likes for all songs in the album.
+     * @return The total number of likes for all songs on the album.
      */
     public Integer getTotalLikes() {
         int totalLikes = 0;
