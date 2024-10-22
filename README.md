@@ -1,113 +1,35 @@
-# Readme Etapa 2 POO
+# Music Streaming Application (OOP-Based)
 
-### Mentiuni : 
-### * am folosit rezolvarea oficiala pentru etapa 1.
-### * am dat 2 commituri cu acelasi nume inainte sa aflu ca se scade pentru asta, deci daca se poate sa 
-### se treaca cu vederea.
+This project is a Spotify-like music streaming platform built using object-oriented programming (OOP) principles. It allows users to interact with a variety of content, including albums, podcasts, and artist events, while managing different user roles like artists and hosts.
 
-## Explicatii pachete si clase
+## Features
+
+- **User Roles**: 
+  - Artists can add albums, events, and merchandise.
+  - Hosts can manage podcasts and announcements.
+  - Regular users have access to personalized pages (e.g., Liked Content).
   
-* User -> am adaugat 2 clase, artist si host :
+- **Content Management**: 
+  - Create, display, and remove albums, events, podcasts, and merchandise.
+  - Seamless handling of user actions based on role-specific permissions.
 
-      Artist -> extensie pentru user, contine metode specifice userilor care sunt si artisti
+- **Dynamic Operations**:
+  - Switch between different user statuses (online/offline).
+  - View all online users and interact with content in real time.
+  
+- **Search & Interaction**:
+  - Search and select artists or hosts with ease.
+  - Browse top 5 albums and artists based on popularity metrics.
 
-      Host -> extensie pentru user, contine metode specifice userilor care sunt si hosts
+## Object-Oriented Principles
 
-      #Mentiune : userul normal va fi obiect de tip User
+- **Inheritance**: `Artist` and `Host` extend the base `User` class, inheriting common properties while adding role-specific functionality.
+- **Interfaces**: The `ArtistOperations` and `HostOperations` interfaces define clear methods for extending user roles.
+- **Design Patterns**: The **Visitor** pattern is implemented to safely check if users, albums, or podcasts are in use before deletion.
+- **Lambda Expressions**: Used for efficient sorting and filtering of content, enhancing system performance.
 
-* Collections -> am adaugat mai multe clase :
+## Technical Overview
 
-      Album -> obiectul pentru albumul unui artist. 
-
-      AlbumResult -> obiect ce ajuta in afisarea unui album.
-
-      PodcastResult -> obiect ce ajuta in afisarea unui podcast.
-
-
-* Files -> am adaugat mai multe clase :
-
-      Announcement -> obiect pentru un anunt al unui host.
-
-      Event -> obiect pentru un event al unui artist.
-
-      Merch -> obiect pentru un merch al unui artist.
-
-* interfaces -> pachet unde se afla interfetele pentru Artist si Host
-
-      ArtistOperatons -> interfata unde sunt declarate metodele specifice unui artist.
-
-      HostOperations -> interfata unde sunt declarate metodele specifice unui host.
-
-* visitor -> implementarea design pattern-ului Visitor pentru metoda Usage.
-
-      UsageVisitor -> este implementata metoda prin care se verifica daca un obiect este folosit, pentru a
-                      a stii daca poate fi eliminat sau nu. Aceasta metoda se implementeaza pentru : User,
-                      Artist, Host, Album si Podcast.
-
-  * VerifyDate -> clasa in care este verificata daca o data este valabila sau nu (folosita pentru verificare
-                  atunci cand se adauga un event pentru un artist).
-
-
-## Explicatii implementare comenzi
-
-
-* addUser -> creeam un user nou daca acesta nu exista deja.
-
-* switchConnectionStatus -> schimbam statusul unui user din online in offline sau invers. Daca userul este offline, 
-                            ii este restrctionata utilizarea anumitor comenzi.
-
-* getOnlineUsers -> returneaza toti userii online.
-
-* addAlbum -> adauga un album nou pentru un user. De asemenea, introduce melodiile din album in baza de date(Admin).
-
-* showAlbums -> afiseaza toate albumele unui artist.
-
-* printCurrentPage -> afiseaza pagina pe care se afla userul. Aceasta poate fi fie Homepage sau LikedContentPage(pagini
-                      pagini ale userului), sau pagina unui artist sau host selectat de user.
-
-* addEvent -> adauga un event pentru un artist.
-
-* addMerch -> adauga merch pentru un artist.
-
-* getAllUsers -> afiseaza toti userii, in ordine (useri normali, artisti si hosti).
-
-* deleteUser -> elimina un user. Mai intai se verifica ce tip de user este (normal, artist sau host). Apoi, se verifica daca
-                userul este folosit(ex pentru artist : un user are un album sau o melodie a artistului in player, un user
-                se afla pe pagina artistului). Acest lucru se verifica folosind metoda din clasa UsageVisitor, implementata
-                folosind design pattern-ul visitor. In final, daca userul poate fi sters, se sterge si se elimina orice urma lasata
-                de acesta(ex pentru artist: daca se sterge se sterg si melodiile din baza de date, daca un user are una din melodiile
-                sale la like, se elimina din lista de melodii apreciate).
-
-* addPodcast -> adauga un podcast pentru un host.
-
-* addAnnouncement -> adauga un anunt pentru un host.
-
-* removeAnnouncement -> elimina un anunt pentru un host daca acesta exista.
-
-* showPodcasts -> afiseaza toate podcasturile unui host.
-
-* removeAlbum -> elimina un album al unui artist si automat din baza de date. Are acelasi procedeu de verificare si de eliminare
-                 a urmelor ca la deleteUser(deleteUser pentru un artist se foloseste de removeAlbum). 
-
-* changePage -> schimba pagina userului din HomePage in LikedContentPage si invers.
-
-* removePodcast -> elimina un podcast al unui host si automat din baza de date. Are acelasi procedeu de verificare ca la deleteUser
-                   (deleteUser pentru host se foloseste de removePodcast).
-
-* removeEvent -> se elimina un event pentru host.
-
-* getTop5Albums -> se afiseaza top 5 cele mai apreciate albume de pe aplicatie(in functie de numarul de likeuri ale melodiilor de pe album)
-
-* getTop5Artists -> se afiseaza top 5 cei mai apreciati artisti de pe aplicatie(in functie de numarul de likerui ale melodiilor de pe
-                    toate albumele ale artistului).
-
-* update player si searchbar -> cu introducerea conceputlui de album, am modificat searchbarul si playerul in asa fel incat asupra unui album
-                                se pot aplica aceleasi comenzi specifice unui playlist. De asemenea, am modificat searchu-ul si select-ul 
-                                astfel incat un user sa poata cauta si selecta un artist sau un host.
-
-## Principii POO folosite :
-
-* interfete pentru implementarea metodeleor pentru Artist si Host.
-* mosteniri (Artist si Host mostenesc User).
-* design pattern Visitor pentru implementarea metodei de verificarii a utilizarii unui obiect de tip User/Artist/Host/Album/Podcast.
-* expresii lambda pentru sortare.
+- **Backend**: Manages database operations for storing and retrieving albums, podcasts, and user interactions.
+- **Content Interaction**: The system supports commands like `addAlbum`, `addPodcast`, and `deleteUser` while ensuring data consistency.
+- **Usage Tracking**: Ensures that users or content in use cannot be removed, safeguarding user experience and data integrity.
